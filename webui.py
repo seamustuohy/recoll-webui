@@ -342,12 +342,12 @@ def recoll_search(q):
 #}}}
 #{{{ routes
 #{{{ static
-@bottle.route('/static/:path#.+#')
+@bottle.route('/recoll/static/:path#.+#')
 def server_static(path):
     return bottle.static_file(path, root='./static')
 #}}}
 #{{{ main
-@bottle.route('/')
+@bottle.route('/recoll/')
 @bottle.view('main')
 def main():
     config = get_config()
@@ -355,7 +355,7 @@ def main():
             'query': get_query(), 'sorts': SORTS, 'config': config}
 #}}}
 #{{{ results
-@bottle.route('/results')
+@bottle.route('/recoll/results')
 @bottle.view('results')
 def results():
     config = get_config()
@@ -373,7 +373,7 @@ def results():
              'config': config}
 #}}}
 #{{{ preview
-@bottle.route('/preview/<resnum:int>')
+@bottle.route('/recoll/preview/<resnum:int>')
 def preview(resnum):
     query = get_query()
     qs = query_to_recoll_string(query)
@@ -391,7 +391,7 @@ def preview(resnum):
     return tdoc.text
 #}}}
 #{{{ download
-@bottle.route('/download/<resnum:int>')
+@bottle.route('/recoll/download/<resnum:int>')
 def edit(resnum):
     query = get_query()
     qs = query_to_recoll_string(query)
@@ -420,7 +420,7 @@ def edit(resnum):
     return f
 #}}}
 #{{{ json
-@bottle.route('/json')
+@bottle.route('/recoll/json')
 def get_json():
     query = get_query()
     qs = query_to_recoll_string(query)
@@ -438,7 +438,7 @@ def get_json():
     return json.dumps({ 'query': query, 'results': res })
 #}}}
 #{{{ csv
-@bottle.route('/csv')
+@bottle.route('/recoll/csv')
 def get_csv():
     config = get_config()
     query = get_query()
@@ -464,12 +464,12 @@ def get_csv():
     return si.getvalue().strip("\r\n")
 #}}}
 #{{{ settings/set
-@bottle.route('/settings')
+@bottle.route('/recoll/settings')
 @bottle.view('settings')
 def settings():
     return get_config()
 
-@bottle.route('/set')
+@bottle.route('/recoll/set')
 def set():
     config = get_config()
     for k, v in DEFAULTS.items():
@@ -480,7 +480,7 @@ def set():
     bottle.redirect('./')
 #}}}
 #{{{ osd
-@bottle.route('/osd.xml')
+@bottle.route('/recoll/osd.xml')
 @bottle.view('osd')
 def main():
     #config = get_config()
